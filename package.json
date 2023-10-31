@@ -19,7 +19,7 @@
   "scripts": {
     "start": "export REACT_APP_ENV_IP_BE='http://192.168.0.16:6102' && react-scripts start",
     "start:dev": "export REACT_APP_ENV_IP_BE='http://192.168.0.16:6102' && react-scripts start",
-    "build:local": "export REACT_APP_ENV_IP_BE='http://192.168.3.80:6102' && react-script build && cp .htaccess ./build",
+    "build:local": "export REACT_APP_ENV_IP_BE='http://103.119.55.52:6102' && react-script build && cp .htaccess ./build",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
