@@ -45,6 +45,13 @@ const LandingPage = () => {
           alert('Script Error: ' + error);
         });
     };
+
+    window.setInterval(function () {
+      var elem = document.getElementById("terminal");
+      var scroller = document.getElementById("terminal-box");
+      scroller.scrollTop = elem.scrollHeight
+    }, 500);
+
   return (
     <form id='reset'>
       <div className="container vw-100 vh-100 p-4 d-flex flex-column align-items-center">
@@ -64,11 +71,11 @@ const LandingPage = () => {
       <div className="box mt-5 border w-100 h-75 p-3 rounded">
         <h3 className='text-center mt-3'>Terminal Output</h3>
         <div className='mt-2 h-75 w-100'>
-          <div className='bg-dark w-100 h-100 p-3 rounded overflow-scroll'>
+          <div id="terminal-box" className='bg-dark w-100 h-100 p-3 rounded overflow-scroll'>
             {
               file
-                ? <pre className='terminal'>{output.join('\n')}</pre>
-                : <pre className='terminal'>Add File Python On Input</pre>
+                ? <pre id='terminal' className='terminal'>{output.join('\n')}</pre>
+                : <pre id='terminal' className='terminal'>Add File Python On Input</pre>
             }
           </div>
           <p className='m-2'>Status: {status}</p>
