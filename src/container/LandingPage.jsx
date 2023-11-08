@@ -47,7 +47,7 @@ const LandingPage = () => {
     };
 
     window.setInterval(function () {
-      if(status === "On Running"){
+      if(readOnly){
         var elem = document.getElementById("terminal");
         var scroller = document.getElementById("terminal-box");
         scroller.scrollTop = elem.scrollHeight
