@@ -11,48 +11,42 @@ import './style.css'
 const LandingPage = () => {
   const [output, setOutput] = useState([]);
   const [file, setFile] = useState();
-  const [readOnly, setReadOnly] = useState();
+  const [readOnlyData, setReadOnly] = useState();
   const [status, setStatus] = useState("Ready");
-  
-  
+  const socket = new io(`${process.env.REACT_APP_ENV_IP_BE}`)
+
   const onFileChange = (e) => {
     setReadOnly(true);
     setStatus("On Running");
-    const socket = new io(`${process.env.REACT_APP_ENV_IP_BE}`)
-      setOutput([]);
-      const file = e.target.files[0];
-      setFile(file);
-  
-      const formData = new FormData();
-      formData.append('file', file);
-      socket.on('pythonOutput', (data) => {
-        setOutput((prevOutput) => [...prevOutput, data]);
-      });
+    setOutput([]);
+    const file = e.target.files[0];
+    setFile(file);
+
+    const formData = new FormData();
+    formData.append('file', file);
+    socket.on('pythonOutput', (data) => {
+      var elem = document.getElementById("terminal");
+      var scroller = document.getElementById("terminal-box");
+      scroller.scrollTop = elem.scrollHeight
+      setOutput((prevOutput) => [...prevOutput, data]);
+    });
       axios
         .post(`${process.env.REACT_APP_ENV_IP_BE}/upload`, formData)
-        .then((response) => {
-          setReadOnly(false);
-          setStatus("Ready");
-          socket.disconnect();
-          alert('Script Success Running.');
-          document.getElementById("reset").reset();
-        })
-        .catch((error) => {
-          setReadOnly(false);
-          setStatus("Ready");
-          socket.disconnect();
-          document.getElementById("reset").reset();
-          alert('Script Error: ' + error);
-        });
+          .then((response) => {
+            setReadOnly(false);
+            setStatus("Ready");
+            socket.disconnect();
+            alert('Script Success Running.');
+            document.getElementById("reset").reset();
+          })
+          .catch((error) => {
+            setReadOnly(false);
+            setStatus("Ready");
+            socket.disconnect();
+            document.getElementById("reset").reset();
+            alert('Script Error: ' + error);
+          });
     };
-
-    window.setInterval(function () {
-      if(readOnly){
-        var elem = document.getElementById("terminal");
-        var scroller = document.getElementById("terminal-box");
-        scroller.scrollTop = elem.scrollHeight
-      }
-    }, 500);
 
   return (
     <form id='reset'>
@@ -61,7 +55,7 @@ const LandingPage = () => {
         <h3 className='text-center mb-3'>Patcher Python Script</h3>
         <InputGroup className="mt-2">
           <Form.Control
-            disabled={readOnly}
+            disabled={readOnlyData}
             type='file'
             placeholder="Script Python"
             aria-label="Script Python"
